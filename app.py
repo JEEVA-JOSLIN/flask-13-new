@@ -135,6 +135,5 @@ def process_file():
     
     # Return the content in JSON format
     return jsonify(content)
-
 if __name__ == "__main__":
     app.run(debug=True)
