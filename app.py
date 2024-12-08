@@ -160,7 +160,7 @@ from pptx.shapes.picture import Picture
 from flask import Flask, request, jsonify
 from collections import OrderedDict
 from craft import CRAFT
-from imgproc import resize_aspect_ratio, normalizeMeanVariance
+from imagproc import resize_aspect_ratio, normalizeMeanVariance
 from craft_utils import getDetBoxes, adjustResultCoordinates
 processor_eng = TrOCRProcessor.from_pretrained('microsoft/trocr-large-stage1')
 model_eng = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-large-stage1')
