@@ -161,10 +161,10 @@ from collections import OrderedDict
 from craft import CRAFT
 from imagproc import resize_aspect_ratio, normalizeMeanVariance
 from craft_utils import getDetBoxes, adjustResultCoordinates
-processor_eng = TrOCRProcessor.from_pretrained('microsoft/trocr-large-stage1')
-model_eng = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-large-stage1')
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
-model_eng.to(device)
+#processor_eng = TrOCRProcessor.from_pretrained('microsoft/trocr-large-stage1')
+#model_eng = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-large-stage1')
+#device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+#model_eng.to(device)
 app = Flask(__name__)
 def copyStateDict(state_dict):
     """Copy state dictionary to remove module prefix if present."""
@@ -250,45 +250,46 @@ class MasterApp:
             print(f"Error processing file: {e}")
             return -1
     
-    def perform_ocr(self,image):
-        rows=detect_text(image,device)
-        text=""
-        ordered_words = []
-        script_to_model = {
-            'Latin': (model_eng, processor_eng),       
-        }
-        for row in rows:
-            for box, _ in row:
-                box = np.int32(box)
-                x_coords = box[:, 0]
-                y_coords = box[:, 1]
-                xmin, xmax = int(np.min(x_coords)), int(np.max(x_coords))
-                ymin, ymax = int(np.min(y_coords)), int(np.max(y_coords))
-                word_image = image[ymin:ymax, xmin:xmax]
-                ordered_words.append(word_image)
+    # def perform_ocr(self,image):
+    #     rows=detect_text(image,device)
+    #     text=""
+    #     ordered_words = []
+    #     script_to_model = {
+    #        # 'Latin': (model_eng, processor_eng),       
+    #     }
+    #     for row in rows:
+    #         for box, _ in row:
+    #             box = np.int32(box)
+    #             x_coords = box[:, 0]
+    #             y_coords = box[:, 1]
+    #             xmin, xmax = int(np.min(x_coords)), int(np.max(x_coords))
+    #             ymin, ymax = int(np.min(y_coords)), int(np.max(y_coords))
+    #             word_image = image[ymin:ymax, xmin:xmax]
+    #             ordered_words.append(word_image)
             
-        for i,word in enumerate(ordered_words): 
-            print(f"[INFO] Detecting the script/language for word {i}...")
-            script, orientation = self.detect_language(image) 
-            print(f"[INFO] Detected Script: {script}, Orientation: {orientation}°")
-            if script not in script_to_model:
-                print("[WARNING] Script not recognized or not supported. Defaulting to English OCR.")
-                model, processor = model_eng, processor_eng
-            else:
-                model, processor = script_to_model[script]
+    #     for i,word in enumerate(ordered_words): 
+    #         print(f"[INFO] Detecting the script/language for word {i}...")
+    #         script, orientation = self.detect_language(image) 
+    #         print(f"[INFO] Detected Script: {script}, Orientation: {orientation}°")
+    #         if script not in script_to_model:
+    #             print("[WARNING] Script not recognized or not supported. Defaulting to English OCR.")
+    #            # model, processor = model_eng, processor_eng
+    #         else:
+    #           #  model, processor = script_to_model[script]
 
-            print(f"[INFO] Using OCR model for script: {script}")
-            print("[INFO] Performing OCR...")
-            pixel_values = processor(images=word, return_tensors="pt").pixel_values
-            generated_ids = model.generate(pixel_values)
-            text += (processor.batch_decode(generated_ids, skip_special_tokens=True)[0]+" ")
-            print("\n",text,"\n")
-        print("[INFO] OCR Result:")
-        print(text)
-        return text
+    #         print(f"[INFO] Using OCR model for script: {script}")
+    #         print("[INFO] Performing OCR...")
+    #         pixel_values = processor(images=word, return_tensors="pt").pixel_values
+    #        # generated_ids = model.generate(pixel_values)
+    #         text += (processor.batch_decode(generated_ids, skip_special_tokens=True)[0]+" ")
+    #         #print("\n",text,"\n")
+    #     print("[INFO] OCR Result:")
+    #     print(text)
+    #     return text
     
     def process_image(self, image):
-        ocr_text=self.perform_ocr(image)
+        #ocr_text=self.perform_ocr(image)
+        ocr_text="HI"
         _, buffer = cv2.imencode('.png', image)
         image_base64 = base64.b64encode(buffer).decode('utf-8')
         print("ocr",ocr_text)
@@ -343,7 +344,7 @@ class MasterApp:
                 
                 nparr = np.frombuffer(image_bytes, np.uint8)
                 img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-                ocr_text=self.perform_ocr(img)
+                ocr_text="HI"
 
                 content[f"page_{i + 1}"] = {
                     "text": ocr_text,
@@ -370,7 +371,7 @@ class MasterApp:
     
                     img = cv2.imdecode(image_np, cv2.IMREAD_COLOR) 
                     images.append(image_base64)
-                    ocr_text.append(self.perform_ocr(img))
+                    ocr_text.append("HI")
 
                 content[f"page_{page_num + 1}"] = {
                     "text": text,
@@ -438,7 +439,7 @@ class MasterApp:
                         crop_top_px:crop_bottom_px, 
                         crop_left_px:crop_right_px
                     ]
-                ocr_text=self.perform_ocr(img)
+                ocr_text="HI"
                 image_base64 = base64.b64encode(image).decode('utf-8')
 
                 content["images"].append(image_base64)
@@ -487,7 +488,7 @@ class MasterApp:
                             crop_top_px:crop_bottom_px, 
                             crop_left_px:crop_right_px
                         ]
-                    ocr_text.append(self.perform_ocr(img))              
+                    ocr_text.append("HI")              
                     image_base64.append(base64.b64encode(image).decode('utf-8'))
 
             content[f"page_{tot_pg}"] = {
