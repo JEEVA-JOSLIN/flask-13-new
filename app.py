@@ -255,7 +255,7 @@ class MasterApp:
         text=""
         ordered_words = []
         script_to_model = {
-           # 'Latin': (model_eng, processor_eng),       
+            'Latin': (model_eng, processor_eng),       
         }
         for row in rows:
             for box, _ in row:
@@ -273,16 +273,16 @@ class MasterApp:
             print(f"[INFO] Detected Script: {script}, Orientation: {orientation}°")
             if script not in script_to_model:
                 print("[WARNING] Script not recognized or not supported. Defaulting to English OCR.")
-               # model, processor = model_eng, processor_eng
+                model, processor = model_eng, processor_eng
             else:
-              #  model, processor = script_to_model[script]
+                model, processor = script_to_model[script]
 
             print(f"[INFO] Using OCR model for script: {script}")
             print("[INFO] Performing OCR...")
             pixel_values = processor(images=word, return_tensors="pt").pixel_values
-           # generated_ids = model.generate(pixel_values)
+            generated_ids = model.generate(pixel_values)
             text += (processor.batch_decode(generated_ids, skip_special_tokens=True)[0]+" ")
-            #print("\n",text,"\n")
+            print("\n",text,"\n")
         print("[INFO] OCR Result:")
         print(text)
         return text
