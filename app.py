@@ -160,8 +160,8 @@ from collections import OrderedDict
 from craft import CRAFT
 from imagproc import resize_aspect_ratio, normalizeMeanVariance
 from craft_utils import getDetBoxes, adjustResultCoordinates
-processor_eng = TrOCRProcessor.from_pretrained('microsoft/trocr-large-stage1',force_download=True)
-model_eng = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-large-stage1',force_download=True)
+processor_eng = TrOCRProcessor.from_pretrained('./HINDI')
+model_eng = VisionEncoderDecoderModel.from_pretrained('./HINDI')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 model_eng.to(device)
 app = Flask(__name__)
