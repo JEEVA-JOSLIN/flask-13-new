@@ -6,10 +6,10 @@ python-pptx==0.6.21
 PyMuPDF==1.21.0 
 transformers==4.31.0
 torch==2.0.1
-opencv-python==4.8.0.76
 pytesseract==0.3.10
 Pillow==10.0.0
 pdf2image==1.16.3
 craft-text-detector==0.3.3
 imgproc==0.0.2.1
-numpy
+opencv-python==3.4.2.17 
+numpy==1.14.5
