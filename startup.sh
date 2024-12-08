@@ -10,4 +10,7 @@ apt-get install -y poppler-utils
 apt-get install -y libgl1-mesa-glx 
 apt-get install -y libglib2.0-0
 apt-get install -y libopencv-dev
+apt-get install -y libatlas-base-dev 
+apt-get install -y libopenjp2-7 
+apt-get install -y libtiff5
 gunicorn --workers 3 --bind 0.0.0.0:8000 app:app --log-level debug
