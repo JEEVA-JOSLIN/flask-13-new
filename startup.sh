@@ -8,4 +8,5 @@ apt-get install -y tesseract-ocr
 apt-get install -y libtesseract-dev 
 apt-get install -y poppler-utils 
 apt-get install -y libgl1-mesa-glx 
+apt-get install -y libglib2.0-0
 gunicorn --workers 3 --bind 0.0.0.0:8000 app:app --log-level debug
