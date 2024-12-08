@@ -5,7 +5,6 @@
 # import os
 # # Flask setup
 # app = Flask(__name__)
-
 # # Directory to save uploaded files temporarily
 # UPLOAD_FOLDER = './uploads'
 # os.makedirs(UPLOAD_FOLDER, exist_ok=True)
